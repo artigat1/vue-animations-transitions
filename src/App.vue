@@ -11,7 +11,7 @@
                 <br /><br />
                 <button @click="show = !show" class="btn btn-primary">Show alert</button>
                 <br /><br />
-                <transition :name="alertAnimation" :type="transitionType">
+<!--                <transition :name="alertAnimation" :type="transitionType">
                     <div class="alert alert-info" v-if="show">This is some info</div>
                 </transition>
                 <transition name="slide" type="animation">
@@ -22,6 +22,10 @@
                         leave-active-class="animated shake"
                 >
                     <div class="alert alert-info" v-if="show">This is some info</div>
+                </transition>-->
+                <transition :name="alertAnimation" mode="out-in">
+                    <div class="alert alert-info" v-if="show">This is some info</div>>
+                    <div class="alert warning" v-if="!show">This is some warning</div>
                 </transition>
             </div>
         </div>
@@ -33,24 +37,7 @@
         data() {
             return {
                 show: false,
-                alertAnimation: 'fade',
-                transitionType: 'transition'
-            }
-        },
-        methods: {
-            onAnimationChange(event) {
-                const value = event.target.value;
-                switch (value) {
-                    case 'slide':
-                        this.alertAnimation = 'slide';
-                        this.transitionType = 'animation';
-                        break;
-
-                    case 'fade':
-                        this.alertAnimation = 'fade';
-                        this.transitionType = 'transition';
-                        break;
-                }
+                alertAnimation: 'fade'
             }
         }
     }
@@ -91,7 +78,7 @@
 
     .slide-leave-active {
         animation: slide-out 1s ease-out forwards;
-        transition: opacity 3s;
+        transition: opacity 1s;
         opacity: 0;
     }
 
