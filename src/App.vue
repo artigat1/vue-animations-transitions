@@ -4,15 +4,20 @@
             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <h1>Animations</h1>
                 <hr />
+                <select @change="onAnimationChange" class="form-control">
+                    <option value="fade">Fade</option>
+                    <option value="slide">Slide</option>
+                </select>
+                <br /><br />
                 <button @click="show = !show" class="btn btn-primary">Show alert</button>
                 <br /><br />
-                <transition name="fade">
+                <transition :name="alertAnimation" :type="transitionType">
                     <div class="alert alert-info" v-if="show">This is some info</div>
                 </transition>
                 <transition name="slide" type="animation">
                     <div class="alert alert-info" v-if="show">This is some info</div>
                 </transition>
-                <transition 
+                <transition
                         enter-active-class="animated bounce"
                         leave-active-class="animated shake"
                 >
@@ -27,7 +32,25 @@
     export default {
         data() {
             return {
-                show: true
+                show: false,
+                alertAnimation: 'fade',
+                transitionType: 'transition'
+            }
+        },
+        methods: {
+            onAnimationChange(event) {
+                const value = event.target.value;
+                switch (value) {
+                    case 'slide':
+                        this.alertAnimation = 'slide';
+                        this.transitionType = 'animation';
+                        break;
+
+                    case 'fade':
+                        this.alertAnimation = 'fade';
+                        this.transitionType = 'transition';
+                        break;
+                }
             }
         }
     }
@@ -51,7 +74,7 @@
         transition: opacity 1s;
         opacity: 0;
     }
-    
+
     .slide-enter {
         /* start state setup in keyframe */
         opacity: 0;
