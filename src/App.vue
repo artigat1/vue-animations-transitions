@@ -46,9 +46,22 @@
                 <hr />
                 <button @click="toggleComponent" class="btn btn-primary">Toggle component</button>
                 <br><br>
-                <transition name="fade" mode="out-in">
+                <transition mode="out-in" name="fade">
                     <component :is="selectedComponent"></component>
                 </transition>
+                <hr>
+                <button @click="addItem" class="btn btn-primary">Add item</button>
+                <br><br>
+                <ul class="list-group">
+                    <transition-group name="slide">
+                        <li :key="number"
+                            @click="removeItem(index)"
+                            class="list-group-item"
+                            style="cursor: pointer"
+                            v-for="(number, index) in numbers">{{ number }}
+                        </li>
+                    </transition-group>
+                </ul>
             </div>
         </div>
     </div>
@@ -70,7 +83,8 @@
                 load: true,
                 alertAnimation: 'fade',
                 elementWidth: 100,
-                selectedComponent: 'app-success-alert'
+                selectedComponent: 'app-success-alert',
+                numbers: [1, 2, 3, 4, 5]
             }
         },
         methods: {
@@ -129,6 +143,13 @@
                         this.selectedComponent = 'app-success-alert';
                         break;
                 }
+            },
+            addItem() {
+                const pos = Math.floor(Math.random() * this.numbers.length);
+                this.numbers.splice(pos, 0, this.numbers.length + 1);
+            },
+            removeItem(index) {
+                this.numbers.splice(index, 1);
             }
         }
     }
@@ -171,6 +192,11 @@
         animation: slide-out 1s ease-out forwards;
         transition: opacity 1s;
         opacity: 0;
+        position: absolute;
+    }
+    
+    .slide-move {
+        transition: trenasform 1s;
     }
 
     @keyframes slide-in {
